@@ -6,7 +6,7 @@ class MaxIntSet
   end
 
   def insert(num)
-    raise "error" if !is_valid?(num)
+    raise "Out of bounds" if !is_valid?(num)
     @store[num] = true unless @store[num]
     true
   end
@@ -36,18 +36,45 @@ end
 
 
 class IntSet
+
+  attr_reader :store
   def initialize(num_buckets = 20)
-    @store = Array.new(num_buckets) { Array.new }
+    @store = Array.new(num_buckets+1) { Array.new }
   end
 
   def insert(num)
+
+    #   @store[num][0] = true unless @store[num][0]
+    # end
+
+    raise "error" if num > @store.length
+
+    # if !@store.include?(num) && num <= @store.length
+       @store[num] << num #unless @store[num][0]
+       p @store
+    # end
+    true
   end
 
   def remove(num)
+    if @store[num][0] == true
+      @store[num][0] = false
+    else
+      return nil
+    end
   end
 
   def include?(num)
+    return true if @store[num][0] == true
+
+    # @store.each do |subarray| #[[],[],[this one]]
+    #   subarray[num]=false
+    # end
+
+    # @store[num][0] == true
+
   end
+
 
   private
 
@@ -59,6 +86,10 @@ class IntSet
     @store.length
   end
 end
+
+test = IntSet.new
+# p test.store
+p test.insert(5)
 
 class ResizingIntSet
   attr_reader :count
