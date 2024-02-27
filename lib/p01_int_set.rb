@@ -94,6 +94,7 @@ end
 
 test = IntSet.new
 # p test.store
+p test.insert(0)
 p test.insert(5)
 p test.insert(19)
 p test.include?(5)
