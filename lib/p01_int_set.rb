@@ -70,15 +70,6 @@ class IntSet
   end
 end
 
-test = IntSet.new
-# p test.store
-p test.insert(0)
-p test.insert(5)
-p test.insert(19)
-p test.include?(5)
-test.remove(5)
-p test
-
 class ResizingIntSet
   attr_reader :count
 
@@ -88,17 +79,23 @@ class ResizingIntSet
   end
 
   def insert(num)
+    return false if include?(num)
+    self[num] << num
+    true
   end
 
   def remove(num)
+    self[num].delete(num)
   end
 
   def include?(num)
+    self[num].include?(num)
   end
 
   private
 
   def [](num)
+    return @store[num]
     # optional but useful; return the bucket corresponding to `num`
   end
 
