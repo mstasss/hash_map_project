@@ -45,38 +45,17 @@ class IntSet
 
 
   def insert(num)
-    return false if @store.include?(num)
-    @store[num] << num
-    @store
-    # #   @store[num][0] = true unless @store[num][0]
-    # # end
-
-    # raise "error" if num > @store.length
-
-    # # if !@store.include?(num) && num <= @store.length
-    #    @store[num] << num #unless @store[num][0]
-    #    p @store
-    # # end
-    # true
+    return false if include?(num)
+    self[num] << num
+    true
   end
 
   def remove(num)
-
-    @store[num].delete(num)
-    # if @store[num][0] == true
-    #   @store[num][0] = false
-    # else
-    #   return nil
+    self[num].delete(num)
   end
 
   def include?(num)
-    return true if @store[num].include?(num)
-    false
-    # @store.each do |subarray| #[[],[],[this one]]
-    #   subarray[num]=false
-    # end
-
-    # @store[num][0] == true
+    self[num].include?(num)
   end
 
 
@@ -84,7 +63,6 @@ class IntSet
 
   def [](num)
     return @store[num % 20]
-    # optional but useful; return the bucket corresponding to `num`
   end
 
   def num_buckets
