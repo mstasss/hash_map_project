@@ -81,18 +81,27 @@ class ResizingIntSet
   def insert(num)
     return false if include?(num)
     self[num] << num
+    @count += 1
+    self.resize! if count == num_buckets
     true
   end
 
   def remove(num)
+    return nil if !self.include?(num)
     self[num].delete(num)
+    @count -= 1
   end
 
   def include?(num)
+    return false if self[num] == nil
     self[num].include?(num)
   end
 
-  private
+  def inspect
+    p @store
+  end
+
+  # private
 
   def [](num)
     return @store[num]
@@ -104,5 +113,14 @@ class ResizingIntSet
   end
 
   def resize!
+    num_buckets.times {@store << Array.new}
   end
+
+
 end
+
+test = ResizingIntSet.new
+
+test.inspect
+test.resize!
+test.inspect
