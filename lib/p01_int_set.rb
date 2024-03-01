@@ -119,8 +119,7 @@ class ResizingIntSet
       if !self[i].empty? 
         self[i].each do |el|
           self[i].delete(el)
-          new = el % num_buckets
-          self[new] << el
+          self[el] << el
         end
       end
     end
