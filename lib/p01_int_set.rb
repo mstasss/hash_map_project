@@ -116,7 +116,7 @@ class ResizingIntSet
     num_buckets.times {@store << Array.new}
     p num_buckets
     (0..(num_buckets/2)).each do |i|
-      if !self[i].empty? 
+      if !self[i].empty?
         self[i].each do |el|
           self[i].delete(el)
           self[el] << el
