@@ -21,7 +21,8 @@ class Hash
   def hash
     self.each_value.flatten.chars.map(&:ord).join().to_i
     # self.flatten.map(&:to_s).join().to_i
-
+    #b = {a: "z", b: "1"}
+    #["z", "1"]
   end
 end
 
