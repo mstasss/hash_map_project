@@ -131,13 +131,13 @@ class ResizingIntSet
 
 end
 
-test = ResizingIntSet.new
+# test = ResizingIntSet.new
 
-test.insert(1)
-test.insert(2)
-test.insert(27)
-test.insert(20)
+# test.insert(1)
+# test.insert(2)
+# test.insert(27)
+# test.insert(20)
 
-test.inspect
-test.resize!
-test.inspect
+# test.inspect
+# test.resize!
+# test.inspect
