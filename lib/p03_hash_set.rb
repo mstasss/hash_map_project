@@ -8,21 +8,20 @@ class HashSet
 
   def insert(key)
     #old code
-    return false if self.include?(key.map(&:ord))
+    # return false if self.include?(key)
     self[key] << key
     @count += 1
     self.resize! if count == num_buckets
-    true
+    # true
   end
 
   def include?(key)
-    return false if self[key] == nil
-    self[key].include?(@store[key])
+    self[key].include?(key)
   end
 
   def remove(key)
-    return nil if !self.include?(num)
-    self[num].delete(num)
+    return nil if !self.include?(key)
+    self[key].delete(key)
     @count -= 1
   end
 
@@ -31,18 +30,20 @@ class HashSet
   def [](num)
     # optional but useful; return the bucket corresponding to `num`
     # return @store[num % num_buckets]
-    if num.is_a? Hash
-      output = self.values.map(&:ord).sort.join().to_i
-      return 0 if output == nil
-    elsif num.is_a? Array
-      return 0000000 if self == []
-      output = self.map(&:to_s).join().to_i
-    elsif is_a? String #string/int
-      output = self.chars.map(&:ord).join().to_i
+    if num.is_a?(Array)
+      output = 5
+    elsif num.is_a?(Hash)
+      output = num.values.map(&:ord).sort.join().to_i
+    elsif num.is_a?(Array)
+      output = num.map(&:ord).join().to_i
+    elsif num.is_a?(String)
+      output = num.chars.map(&:ord).join().to_i
+    elsif num.is_a?(Symbol)
+      output = num.to_s.chars.map(&:ord).join().to_i
     else
       output = num
     end
-      @store[output % num_buckets]
+      return @store[output % num_buckets]
   end
 
 
