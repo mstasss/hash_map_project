@@ -1,17 +1,17 @@
 class Node
   include Enumerable
   attr_reader :key
-  attr_accessor :val, :next, :prev
+  attr_accessor :value, :next, :prev
 
-  def initialize(key = nil, val = nil)
+  def initialize(key = nil, value = nil)
     @key = key
-    @val = val
+    @value = value
     @next = nil
     @prev = nil
   end
 
   def to_s
-    "#{@key}: #{@val}"
+    "#{@key}: #{@value}"
   end
 
   def remove
@@ -26,8 +26,7 @@ end
 
 class LinkedList
   include Enumerable
-
-  attr_reader :head, :tail
+  attr_accessor :head, :tail
 
   def initialize
     @head = Node.new
@@ -51,6 +50,15 @@ class LinkedList
 
   def empty?
     @head.next == @tail
+    @head
+  end
+
+  def last
+    @tail
+  end
+
+  def empty?
+    return true if @head.value == nil #&& @tail.value == nil
   end
 
   def get(key)
@@ -70,7 +78,6 @@ class LinkedList
 
   def append(key, val)
 
-
     new_node = Node.new(key, val)
 
     @tail.prev.next = new_node
@@ -79,7 +86,6 @@ class LinkedList
     new_node.next = @tail
     
     @tail.prev = new_node
-
 
   end
 
@@ -107,6 +113,7 @@ class LinkedList
     until current_node == @tail
       current_node = current_node.next
     end
+
   end
 
 
@@ -115,3 +122,10 @@ class LinkedList
     inject([]) { |acc, link| acc << "[#{link.key}, #{link.val}]" }.join(", ")
   end
 end
+
+test = LinkedList.new
+
+test.append("apple",2)
+test.append(4,"hello")
+
+p test.print
