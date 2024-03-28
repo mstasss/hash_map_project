@@ -4,7 +4,7 @@ class Node
   attr_accessor :value, :next, :prev
   attr_accessor :value, :next, :prev
 
-	@@ -15,12 +14,10 @@ def to_s
+  def to_s
   end
 
   def remove
@@ -17,7 +17,7 @@ class Node
   end
 end
 
-	@@ -31,76 +28,55 @@ class LinkedList
+class LinkedList
   def initialize
     @head = Node.new
     @tail = Node.new
@@ -94,7 +94,10 @@ end
       if node.key == key
         node.remove
         return nil
-	@@ -111,21 +87,14 @@ def remove(key)
+      end
+    end
+  end
+
   def each
     current_node = @head.next
     until current_node == @tail
@@ -111,9 +114,9 @@ end
   end
 end
 
-test = LinkedList.new
+# test = LinkedList.new
 
-test.append("apple",2)
-test.append(4,"hello")
+# test.append("apple",2)
+# test.append(4,"hello")
 
-p test.print
+# p test.print
