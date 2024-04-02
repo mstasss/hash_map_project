@@ -60,8 +60,8 @@ class LinkedList
   end
 
   def include?(key)
-    self.each do |node| 
-      if node.key == key 
+    self.each do |node|
+      if node.key == key
         return true
       end
     end
@@ -74,10 +74,10 @@ class LinkedList
     new_node = Node.new(key, val)
 
     @tail.prev.next = new_node
-    
+
     new_node.prev = @tail.prev
     new_node.next = @tail
-    
+
     @tail.prev = new_node
 
 
@@ -90,11 +90,11 @@ class LinkedList
         return node
       end
     end
-    
+
   end
 
   def remove(key)
-    self.each do |node| 
+    self.each do |node|
       if node.key == key
         node.remove
         return nil
