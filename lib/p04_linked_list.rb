@@ -105,6 +105,7 @@ class LinkedList
   def each
     current_node = @head.next
     until current_node == @tail
+      yield current_node
       current_node = current_node.next
     end
   end
