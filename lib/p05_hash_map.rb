@@ -69,3 +69,4 @@ test = HashMap.new
 test.set("apple","100")
 p test.to_s
 # p test
+# lalala
