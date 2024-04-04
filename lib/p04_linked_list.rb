@@ -1,7 +1,7 @@
 class Node
   include Enumerable
-  attr_reader :key
-  attr_accessor :val, :next, :prev
+
+  attr_accessor :val, :next, :prev, :key
 
   def initialize(key = nil, val = nil)
     @key = key

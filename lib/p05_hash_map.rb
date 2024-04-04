@@ -12,14 +12,26 @@ class HashMap
   end
 
   def include?(key)
+    @store[bucket(key)].each do |node|
+      return true if node.key == key
+    end
+    false
   end
 
   def set(key, val)
-    new_bucket = key.hash % num_buckets
-    @store[new_bucket].append(key,val)
+    if self.include?(key)
+      @store[bucket(key)].update(key,val)
+    else
+      @store[bucket(key)].append(key,val)
+    end
   end
 
   def get(key)
+    @store[bucket(key)].each do |node|
+      if node.key == key
+        return node.val
+      end
+    end
   end
 
   def delete(key)
@@ -28,8 +40,13 @@ class HashMap
     count -= 1
   end
 
-  def each
-  end
+  # def each
+  #   # i = 0
+  #   #  while i <= num_buckets
+  #   #   self[i]
+  #   #   i+= 1
+  #   #  end
+  # end
 
   # uncomment when you have Enumerable included
   def to_s
@@ -43,13 +60,14 @@ class HashMap
   alias_method :[], :get
   alias_method :[]=, :set
 
+
   def pretty
     self.each do |node|
       puts node
     end
   end
 
-  private
+  # private
 
   def num_buckets
     @store.length
@@ -59,14 +77,17 @@ class HashMap
   end
 
   def bucket(key)
-    key.hash % count # returns a number
+    key.hash % num_buckets # returns a number
   end
 
 
 end
 
-test = HashMap.new
-test.set("apple","100")
-p test.to_s
+hash = HashMap.new
+hash.set(:first, 1)
+hash.set(:first, "apple")
+p hash[:first]
+
+
 # p test
 # lalala
