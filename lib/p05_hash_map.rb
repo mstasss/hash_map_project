@@ -90,15 +90,25 @@ class HashMap
 
   def resize!
     num_buckets.times {@store << LinkedList.new}
-    (0..num_buckets/2).each do |index|
-      @store[index].each do |node|
-        if node
-          self.set(node.key,node.val)
-          node.remove
+    
+    (0..num_buckets/2).each do |bucket|
+      if @store[bucket].empty?
+        next
+      else
+        @store[bucket].each do |node|
+          if node.next == nil
+            self.set(node.key,node.val)
+            node.remove
+            break
+          else
+            self.set(node.key,node.val)
+          end
         end
       end
     end
+    
   end
+
 
   def bucket(key)
     key.hash % num_buckets # could refactor to return bucket instead of index
