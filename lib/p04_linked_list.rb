@@ -102,8 +102,9 @@ class LinkedList
   end
 
   def each
+    # if ___.empty?
     current_node = @head.next
-    until current_node == @tail
+    until current_node == @tail #&& current_node != nil
       yield current_node
       current_node = current_node.next
     end

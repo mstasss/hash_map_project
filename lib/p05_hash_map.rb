@@ -12,18 +12,18 @@ class HashMap
   end
 
   def include?(key)
-    @store[bucket(key)].each do |node|
-      return true if node.key == key
-    end
-    false
+    @store[bucket(key)].include?(key)
   end
+
 
   def set(key, val)
     if self.include?(key)
       @store[bucket(key)].update(key,val)
     else
       @store[bucket(key)].append(key,val)
+      @count += 1
     end
+    resize! if @count == num_buckets
   end
 
   def get(key)
@@ -35,18 +35,19 @@ class HashMap
   end
 
   def delete(key)
-    bucket_num = bucket(key)
+    num_bucket = @store[bucket(key)]
     num_bucket.remove(key)
-    count -= 1
+    @count -= 1
   end
 
-  # def each
-  #   # i = 0
-  #   #  while i <= num_buckets
-  #   #   self[i]
-  #   #   i+= 1
-  #   #  end
-  # end
+  def each
+    @store.each do |ele|
+      # yield ele
+      ele.each do |node|
+        yield(node.key,node.val)
+      end
+    end
+  end
 
   # uncomment when you have Enumerable included
   def to_s
@@ -73,21 +74,48 @@ class HashMap
     @store.length
   end
 
+#   def resize!
+#     num_buckets.times {@store << Array.new}
+#     p num_buckets
+#     (0..(num_buckets/2)).each do |i|
+#       if !self[i].empty?
+#         self[i].each do |el|
+#           self[i].delete(el)
+#           self[el] << el
+#         end
+#       end
+#     end
+#   end
+# end
+
   def resize!
+    num_buckets.times {@store << LinkedList.new}
+    (0..num_buckets/2).each do |index|
+      @store[index].each do |node|
+        if node
+          self.set(node.key,node.val)
+          node.remove
+        end
+      end
+    end
   end
 
   def bucket(key)
-    key.hash % num_buckets # returns a number
+    key.hash % num_buckets # could refactor to return bucket instead of index
   end
 
 
 end
 
+#proof that include is working
+# hash = HashMap.new
+# hash.set(:first, 1)
+# hash.set(:first, "apple")
+# p hash.include?(:asdasd)
+
+
 hash = HashMap.new
 hash.set(:first, 1)
 hash.set(:first, "apple")
-p hash[:first]
+p hash.delete(:first)
 
-
-# p test
-# lalala

@@ -46,8 +46,6 @@ class HashSet
       return @store[output % num_buckets]
   end
 
-
-
   def num_buckets
     @store.length
   end
