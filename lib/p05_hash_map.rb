@@ -74,23 +74,9 @@ class HashMap
     @store.length
   end
 
-#   def resize!
-#     num_buckets.times {@store << Array.new}
-#     p num_buckets
-#     (0..(num_buckets/2)).each do |i|
-#       if !self[i].empty?
-#         self[i].each do |el|
-#           self[i].delete(el)
-#           self[el] << el
-#         end
-#       end
-#     end
-#   end
-# end
-
   def resize!
     num_buckets.times {@store << LinkedList.new}
-    
+
     (0..num_buckets/2).each do |bucket|
       if @store[bucket].empty?
         next
@@ -106,7 +92,7 @@ class HashMap
         end
       end
     end
-    
+
   end
 
 
