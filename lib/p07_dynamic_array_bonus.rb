@@ -1,4 +1,6 @@
 class StaticArray
+  include Enumerable
+
   attr_reader :store
 
   def initialize(capacity)
@@ -27,6 +29,8 @@ class StaticArray
 end
 
 class DynamicArray
+  include Enumerable 
+
   attr_accessor :count
 
   def initialize(capacity = 8)
@@ -35,9 +39,11 @@ class DynamicArray
   end
 
   def [](i)
+    @store[i]
   end
 
   def []=(i, val)
+    @store[i] = val
   end
 
   def capacity
@@ -45,27 +51,67 @@ class DynamicArray
   end
 
   def include?(val)
+    self.each do |i|
+      if i == val
+        return true
+      end
+    end
+    false
   end
 
   def push(val)
+    resize! if @count == self.capacity
+
+    @store[@count] = val
+    @count += 1
   end
 
   def unshift(val)
+    resize! if @count == self.capacity
+    
+    @count += 1
   end
 
   def pop
+    self.each do |i|
+      if self[i] == nil 
+        val = @store[i - 1]
+        @store[i - 1] = nil
+        @count -= 1
+        return val
+      end
+    end
+    nil
   end
 
   def shift
+    self.each do |i|
+      if self[i] != nil
+        val = @store[i]
+        @store[i] = nil
+        @count -= 1
+        return val
+      end
+    end
+    nil
   end
 
   def first
+    self[0]
   end
 
   def last
+    self.each do |i|
+      if i == nil
+        return self[i-1]
+      end
+    end
   end
 
   def each
+    self.count.times do |i| 
+      yield self[i]
+    end
   end
 
   def to_s
@@ -81,7 +127,13 @@ class DynamicArray
   [:length, :size].each { |method| alias_method method, :count }
 
   private
-
+  
+  
   def resize!
+      new_arr = StaticArray.New(self.capacity * 2)
+      @store.each_with_index do |val,ind|
+        new_arr[ind] = val
+      end
+      @store = new_arr
   end
 end
