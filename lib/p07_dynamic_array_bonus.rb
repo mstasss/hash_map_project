@@ -1,5 +1,4 @@
 class StaticArray
-  include Enumerable
 
   attr_reader :store
 
@@ -29,21 +28,36 @@ class StaticArray
 end
 
 class DynamicArray
-  include Enumerable 
+  include Enumerable
 
-  attr_accessor :count
+  attr_accessor :count, :store, :start_idx
 
   def initialize(capacity = 8)
     @store = StaticArray.new(capacity)
     @count = 0
+    @start_idx = 0
   end
 
   def [](i)
-    @store[i]
+    return nil if i >= count || i < -count
+    i += count if i < 0
+    @store[(start_idx + i) % capacity]
   end
 
   def []=(i, val)
-    @store[i] = val
+    if i >= count
+      (i - count).times { push(nil) }
+    elsif i < 0
+      return nil if i < -count
+      i += count
+    end
+
+    if i == count
+      resize! if count == capacity
+      @count += 1
+    end
+
+    @store[(start_idx + i) % capacity] = val
   end
 
   def capacity
@@ -60,21 +74,21 @@ class DynamicArray
   end
 
   def push(val)
-    resize! if @count == self.capacity
-
-    @store[@count] = val
+    resize! if count == capacity
+    @store[(start_idx + count) % capacity] = val
     @count += 1
   end
 
   def unshift(val)
-    resize! if @count == self.capacity
-    
+    resize! if count == capacity
+    @start_idx = (start_idx - 1) % capacity
+    @store[start_idx] = val
     @count += 1
   end
 
   def pop
     self.each do |i|
-      if self[i] == nil 
+      if self[i] == nil
         val = @store[i - 1]
         @store[i - 1] = nil
         @count -= 1
@@ -85,15 +99,12 @@ class DynamicArray
   end
 
   def shift
-    self.each do |i|
-      if self[i] != nil
-        val = @store[i]
-        @store[i] = nil
-        @count -= 1
-        return val
-      end
-    end
-    nil
+    return nil if count == 0
+    first_item = @store[start_idx]
+    @store[start_idx] = nil
+    @start_idx = (start_idx + 1) % capacity
+    @count -= 1
+    first_item
   end
 
   def first
@@ -109,7 +120,7 @@ class DynamicArray
   end
 
   def each
-    self.count.times do |i| 
+    self.count.times do |i|
       yield self[i]
     end
   end
@@ -119,21 +130,24 @@ class DynamicArray
   end
 
   def ==(other)
-    return false unless [Array, DynamicArray].include?(other.class)
-    # ...
+    return false unless other.is_a?(DynamicArray) || other.is_a?(Array)
+    return false if count != other.count
+    each_with_index { |el, i| return false unless el == other[i] }
+    true
   end
 
   alias_method :<<, :push
   [:length, :size].each { |method| alias_method method, :count }
 
   private
-  
-  
+
+
   def resize!
-      new_arr = StaticArray.New(self.capacity * 2)
-      @store.each_with_index do |val,ind|
-        new_arr[ind] = val
-      end
-      @store = new_arr
+    new_capacity = capacity * 2
+    new_store = StaticArray.new(new_capacity)
+    each_with_index { |el, i| new_store[i] = el }
+    @store = new_store
+    @start_idx = 0
   end
 end
+
